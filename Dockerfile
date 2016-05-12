@@ -1,18 +1,21 @@
-FROM risingstack/alpine:3.3-v6.0.0-3.5.0
+FROM mhart/alpine-node:6.1.0
 
 ENV ZOOKEEPER_HOST localhost
 ENV ZOOKEEPER_PORT 2181
 ENV LISTEN_PORT 8080
+ENV NODE_ENV production
+
+RUN mkdir /zkstatus && addgroup zkstatus && adduser zkstatus -D -G zkstatus && chown -R zkstatus /zkstatus
+
+WORKDIR /zkstatus
+
+USER zkstatus
 
 COPY package.json .
 
 RUN npm install
 
 COPY index.js .
-
-RUN addgroup checkzk && adduser checkzk -D -G checkzk
-
-#USER checkzk
 
 EXPOSE $LISTEN_PORT
 
