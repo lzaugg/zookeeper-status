@@ -1,0 +1,14 @@
+{
+  "name": "som-111-zookeeper-monitor",
+  "version": "1.0.0",
+  "description": "README =======",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "restify": "^4.0.4"
+  }
+}
