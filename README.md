@@ -2,11 +2,30 @@ README
 =======
 A simple node app for checking the health of a zookeeper server. It provides the most important status information (like the "stats" command) trough an HTTP API as JSON.
 
-Run
+Docker
 ------
 ```
-docker run -d -e ZOOKEEPER_HOST=192.168.1.66 -p 8080:8080 lzaugg/zookeeper-status
+docker run -d -e ZK_STATUS_ZK_URL=tcp://192.168.1.66:2181 -p 8080:8080 lzaugg/zookeeper-status
 ```
+
+### Changes
+`1.0.0`
+
+`1.1.0`
+- ENV: `ZOOKEEPER_HOST`: zookeeper server, default `localhost`
+- ENV: `ZOOKEEPER_PORT`: zookeeper port, default `2181`
+- ENV: `LISTEN_PORT`: server listening port for HTTP API, default `8080`
+
+`1.1.0`
+- ENV: `ZK_STATUS_ZK_HOST`: zookeeper server, default `localhost`
+- ENV: `ZK_STATUS_ZK_PORT`: zookeeper port, default `2181`
+- ENV: `ZK_STATUS_LISTEN_PORT`: server listening port for HTTP API, default `8080`
+
+`1.2.0`
+- ENV: `ZK_STATUS_ZK_URL`: zookeeper server url, default `tcp://localhost:2181`
+- ENV: `ZOOKEEPER_PORT`: same as `ZK_STATUS_ZK_URL`. Useful for linking to zookeeper container with alias `ZOOKEEPER`
+- ENV: `ZK_STATUS_LISTEN_PORT`: server listening port for HTTP API, default `8080`
+
 
 Status
 -------
@@ -45,8 +64,11 @@ $ curl localhost:8080/status
     "zxid": " 0x2bb",
     "mode": " standalone",
     "nodeCount": 33,
-    "zookeeperHost": "localhost",
-	"zookeeperPort": 2181
+	"configuration": {
+		"zookeeperPort": "2181",
+		"zookeeperHost": "localhost",
+		"listen": 8080
+	}
 }
 ```
 

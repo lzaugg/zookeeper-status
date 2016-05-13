@@ -1,9 +1,11 @@
 var restify = require('restify')
 var net = require('net')
+var url = require('url')
 
+var zkUrl = url.parse(process.env.ZK_STATUS_ZK_URL || process.env.ZOOKEEPER_PORT || 'tcp://localhost:2181')
 var configuration = {
-  host: process.env.ZK_STATUS_ZK_HOST || 'localhost',
-  port: process.env.ZK_STATUS_ZK_PORT || 2181,
+  zookeeperPort: zkUrl.port || 2181,
+  zookeeperHost: zkUrl.hostname || 'localhost',
   listen: process.env.ZK_STATUS_LISTEN_PORT || 8080
 }
 
@@ -52,13 +54,12 @@ var parse = output => {
 
 function respond (req, res, next) {
   var client = new net.Socket()
-  client.connect(configuration.port, configuration.host, () => { client.write('stats') })
+  client.connect(configuration.zookeeperPort, configuration.zookeeperHost, () => { client.write('stats') })
 
   client.on('data', data => {
     var out = data.toString()
     var stats = parse(out)
-    stats.zookeeperHost = configuration.host
-    stats.zookeeperPort = configuration.port
+    stats.configuration = configuration
     res.send(stats)
     client.end()
     return next()
