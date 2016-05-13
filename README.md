@@ -18,11 +18,11 @@ $ curl localhost:8080/status
 Environment
 ------------
 
-- `ZOOKEEPER_HOST`: zookeeper server, default `localhost`
+- `ZK_STATUS_ZK_HOST`: zookeeper server, default `localhost`
 
-- `ZOOKEEPER_PORT`: zookeeper port, default `2181`
+- `ZK_STATUS_ZK_PORT`: zookeeper port, default `2181`
 
-- `LISTEN_PORT`: server listening port for HTTP API, default `8080`
+- `ZK_STATUS_LISTEN_PORT`: server listening port for HTTP API, default `8080`
 
 
 Example

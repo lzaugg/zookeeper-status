@@ -1,6 +1,6 @@
 {
   "name": "zookeeper-status",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simple zookeeper status over HTTP API",
   "repository": "https://github.com/lzaugg/zookeeper-status.git",
   "main": "index.js",

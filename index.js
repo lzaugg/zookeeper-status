@@ -2,9 +2,9 @@ var restify = require('restify')
 var net = require('net')
 
 var configuration = {
-  host: process.env.ZOOKEEPER_HOST || 'localhost',
-  port: process.env.ZOOKEEPER_PORT || 2181,
-  listen: process.env.LISTEN_PORT || 8080
+  host: process.env.ZK_STATUS_ZK_HOST || 'localhost',
+  port: process.env.ZK_STATUS_ZK_PORT || 2181,
+  listen: process.env.ZK_STATUS_LISTEN_PORT || 8080
 }
 
 var parse = output => {
