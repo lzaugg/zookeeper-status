@@ -40,7 +40,8 @@ $ curl http://localhost:8080/status
 	"configuration": {
 		"zookeeperPort": "2181",
 		"zookeeperHost": "localhost",
-		"listen": 8080
+		"listen": 8080,
+		"zookeeperStatsTimeout": 1000
 	}
 }
 ```
@@ -53,6 +54,7 @@ Configuration / Environment
 - `ZK_STATUS_ZK_URL`: zookeeper server url, default `tcp://localhost:2181`
 - `ZOOKEEPER_PORT`: same as `ZK_STATUS_ZK_URL`. Useful for linking to zookeeper container with alias `ZOOKEEPER`
 - `ZK_STATUS_LISTEN_PORT`: server listening port for HTTP API, default `8080`
+- `ZK_STATUS_ZK_TIMEOUT`: zookeeper status timeout in ms, default `1000`
 
 Docker
 ------
@@ -64,6 +66,9 @@ Important Changes
 ---------
 
 `master`
+
+`1.3.x`
+- ENV: `ZK_STATUS_ZK_TIMEOUT`: zookeeper status timeout in ms, default `1000`
 
 `1.2.x`
 - ENV: `ZK_STATUS_ZK_URL`: zookeeper server url, default `tcp://localhost:2181`
@@ -79,5 +84,6 @@ Important Changes
 - ENV: `ZOOKEEPER_HOST`: zookeeper server, default `localhost`
 - ENV: `ZOOKEEPER_PORT`: zookeeper port, default `2181`
 - ENV: `LISTEN_PORT`: server listening port for HTTP API, default `8080`
+
 
 

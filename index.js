@@ -3,10 +3,12 @@ var net = require('net')
 var url = require('url')
 
 var zkUrl = url.parse(process.env.ZK_STATUS_ZK_URL || process.env.ZOOKEEPER_PORT || 'tcp://localhost:2181')
+var statsTimeout = parseInt(process.env.ZK_STATUS_ZK_TIMEOUT) || 1000
 var configuration = {
   zookeeperPort: zkUrl.port || 2181,
   zookeeperHost: zkUrl.hostname || 'localhost',
-  listen: process.env.ZK_STATUS_LISTEN_PORT || 8080
+  listen: process.env.ZK_STATUS_LISTEN_PORT || 8080,
+  zookeeperStatsTimeout: statsTimeout
 }
 
 var parse = output => {
@@ -56,9 +58,19 @@ function respond (req, res, next) {
   var client = new net.Socket()
   client.connect(configuration.zookeeperPort, configuration.zookeeperHost, () => { client.write('stats') })
 
+  var reponseTimeout = setTimeout(() => {
+    client.end()
+    client.destroy()
+    return next(new Error('did not get stats from zookeeper in acceptable time'))
+  }, configuration.zookeeperStatsTimeout)
+
   client.on('data', data => {
+    clearTimeout(reponseTimeout)
     var out = data.toString()
     var stats = parse(out)
+    if (!stats.mode) {
+      return next(new Error('zookeeper does not serve requests :('))
+    }
     stats.configuration = configuration
     res.send(stats)
     client.end()
@@ -66,6 +78,8 @@ function respond (req, res, next) {
   })
 
   client.on('error', err => {
+    clearTimeout(reponseTimeout)
+    client.destroy()
     return next(err)
   })
 }
