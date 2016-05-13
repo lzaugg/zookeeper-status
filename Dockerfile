@@ -16,6 +16,6 @@ RUN npm install
 
 COPY index.js .
 
-EXPOSE $LISTEN_PORT
+EXPOSE $ZK_STATUS_LISTEN_PORT
 
 CMD ["npm", "start"]
